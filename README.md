@@ -3,7 +3,7 @@
 Build project with a watch-like mode.
 
 ```bash
-py -m pip install -e .
+python -m pip install -e .
 ```
 # Test
 Install Dependencies for Tests
