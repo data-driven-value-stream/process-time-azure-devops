@@ -1,0 +1,25 @@
+[build-system]
+requires = []
+build-backend = "hatchling.build"
+
+[project]
+name = "process_time_azure_devops"
+version = "1.0.0"
+authors = [
+    { name="Andrei Kniazev" },
+]
+description = "Will collect process time for projects that are hosted in Azure DevOps"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "GPL-3.0-or-later"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+[project.optional-dependencies]
+test = [
+    "pytest==8.2.0",
+]
+ci = [
+    "pytest==8.2.0"
+]
