@@ -25,6 +25,5 @@ classifiers = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest==8.2.0",
-    "build==1.2.1"
+    "pytest==8.2.0"
 ]
