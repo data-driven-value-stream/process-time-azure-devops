@@ -2,7 +2,8 @@
 requires = [
     "hatchling==1.24.2",
     "azure-devops==7.1.0b4",
-    "pytest==8.2.0"
+    "pytest==8.2.0",
+    "build==1.2.1"
 ]
 build-backend = "hatchling.build"
 
