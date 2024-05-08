@@ -22,5 +22,6 @@ jobs:
           pip install .
           pip install build
           python -m build .
-          
-          
+      - name: Test
+        run: |
+          pytest tests/
