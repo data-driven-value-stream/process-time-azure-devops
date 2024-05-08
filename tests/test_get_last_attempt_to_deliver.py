@@ -1,8 +1,9 @@
-from azure.devops.v7_1.pipelines.models import Pipeline
+from azure.devops.v7_1.pipelines.models import Run
 from src.parsers.get_last_attempt_to_deliver import get_last_attempt_to_deliver
 
 
-def test_no_pipelines_should():
-    pipelines = []
+def test_only_current_run_exist_should_return_current_run():
+    current_run = Run(3, 'delivery pipeline', None, None, 'cd.yml', None, None, None, "succeeded", None, None, None, None )
+    pipelines = [current_run]
     result = get_last_attempt_to_deliver(pipelines)
-    assert result == 4
+    assert result == current_run
