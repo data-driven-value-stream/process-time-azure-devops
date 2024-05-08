@@ -24,6 +24,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-dev = [
-    "pytest==8.2.0"
+test = [
+    "pytest==8.2.0",
+    "azure-devops==7.1.0b4"
 ]
