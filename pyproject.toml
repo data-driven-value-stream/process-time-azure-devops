@@ -11,7 +11,7 @@ sources = ["src"]
 
 [project]
 name = "process_time_azure_devops"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
     { name="Andrei Kniazev" },
 ]
