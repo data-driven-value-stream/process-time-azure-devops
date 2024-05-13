@@ -2,6 +2,7 @@ from azure.devops.v7_1.pipelines.pipelines_client import PipelinesClient
 from parsers.get_last_attempt_to_deliver import get_last_attempt_to_deliver
 from models.ArgumentParseResult import ArgumentParseResult
 from arts.process_time_logo import process_time_logo
+from msrest.authentication import BasicAuthentication
 import getopt
 import sys
 
@@ -40,7 +41,8 @@ def parse_arguments(argv) -> ArgumentParseResult:
 
 def calculate_process_tine(args: ArgumentParseResult) -> None:
     print('Calculating process time...')
-    pipelines_client = PipelinesClient(f'https://dev.azure.com/{args.azure_devops_organization}', args.personal_access_token)
+    credentials = BasicAuthentication('', args.personal_access_token)
+    pipelines_client = PipelinesClient(f'https://dev.azure.com/{args.azure_devops_organization}', credentials)
     runs = pipelines_client.list_runs(args.project, args.pipeline_id)
     previous_attempt = get_last_attempt_to_deliver(runs)
     print(previous_attempt)
