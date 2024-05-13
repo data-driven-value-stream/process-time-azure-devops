@@ -31,7 +31,7 @@ def parse_arguments(argv) -> ArgumentParseResult:
 
     print('========== Arguments: ==========')
     print(f'Azure DevOps Organization: {azure_devops_organization}')
-    print(f'Personal Access Token: {"*" * len(personal_access_token)}')
+    print(f'Personal Access Token: {("*" * len(personal_access_token))[:7]}')
     print(f'Project: {project}')
     print(f'Pipeline ID: {pipeline_id}')
     print('================================')
