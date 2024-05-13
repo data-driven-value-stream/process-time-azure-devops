@@ -80,7 +80,7 @@ jobs:
           python -m build .
       - name: Install
         run: |
-          pip install dist/process_time_azure_devops-0.0.3-py3-none-any.whl
+          pip install dist/process_time_azure_devops-0.0.5-py3-none-any.whl
       - name: Test Help -h
         run: |
           pip list
