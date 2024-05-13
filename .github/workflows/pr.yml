@@ -56,4 +56,4 @@ jobs:
           pip install .[test]
       - name: Test Help
         run: |
-          python src/__main__.py --h
+          python src/__main__.py -h
