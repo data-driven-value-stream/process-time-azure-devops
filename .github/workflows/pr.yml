@@ -57,10 +57,10 @@ jobs:
           pip install .[test]
       - name: Test Help -h
         run: |
-          python src/__main__.py -h
+          python src/process_time_azure_devops/__main__.py -h
       - name: Test Help --help
         run: |
-          python src/__main__.py --help
+          python src/process_time_azure_devops/__main__.py --help
   
   test_install_and_use:
     name: Tests — Install & use CLI Arguments
