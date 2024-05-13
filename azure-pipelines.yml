@@ -33,7 +33,7 @@ steps:
     echo "project=$project"
     pipeline_id=2
     echo "pipeline_id=$pipeline_id"
-    python src/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id"
+    python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id"
   displayName: 'Test — Example Run Trunk Based'
   env:
     System.AccessToken: $(System.AccessToken)
