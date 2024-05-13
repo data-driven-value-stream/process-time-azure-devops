@@ -1,0 +1,25 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+
+variables:
+- name: PYTHON_VERSION
+  value: 3.12.2
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '$(variables.PYTHON_VERSION)'
+  displayName: 'Use Python $(variables.PYTHON_VERSION)'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install .
+  displayName: 'Install dependencies'
+
+- script: |
+    pip install build
+  displayName: 'Build'
