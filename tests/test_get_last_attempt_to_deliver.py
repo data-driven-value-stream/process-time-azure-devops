@@ -1,5 +1,4 @@
-from azure.devops.v7_1.pipelines.models import Run
-from src.parsers.get_last_attempt_to_deliver import get_last_attempt_to_deliver
+from process_time_azure_devops.parsers.get_last_attempt_to_deliver import get_last_attempt_to_deliver
 from tests.generate_test_run import generate_test_run
 
 

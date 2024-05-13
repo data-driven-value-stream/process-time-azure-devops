@@ -1,7 +1,7 @@
 from azure.devops.v7_1.pipelines.pipelines_client import PipelinesClient
-from parsers.get_last_attempt_to_deliver import get_last_attempt_to_deliver
-from models.ArgumentParseResult import ArgumentParseResult
-from arts.process_time_logo import process_time_logo
+from process_time_azure_devops.parsers.get_last_attempt_to_deliver import get_last_attempt_to_deliver
+from process_time_azure_devops.models.ArgumentParseResult import ArgumentParseResult
+from process_time_azure_devops.arts.process_time_logo import process_time_logo
 from msrest.authentication import BasicAuthentication
 import getopt
 import sys
