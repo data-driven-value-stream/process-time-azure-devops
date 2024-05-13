@@ -43,7 +43,7 @@ jobs:
           pip install build
 
   test_help:
-    name: Tests — Help Argument
+    name: Tests — CLI Argument
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -54,6 +54,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install .[test]
-      - name: Test Help
+      - name: Test Help -h
         run: |
           python src/__main__.py -h
+      - name: Test Help --help
+        run: |
+          python src/__main__.py --help
