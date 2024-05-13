@@ -10,7 +10,7 @@ packages = ["src"]
 
 [project]
 name = "process_time_azure_devops"
-version = "1.0.0"
+version = "0.0.1"
 authors = [
     { name="Andrei Kniazev" },
 ]
@@ -35,3 +35,4 @@ test = [
 
 [project.urls]
 "GitHub" = "https://github.com/worldpwn/process-time-azure-devops"
+"Issues" = "https://github.com/worldpwn/process-time-azure-devops/issues"
