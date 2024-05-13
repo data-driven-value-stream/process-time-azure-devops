@@ -21,8 +21,11 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
-    pip install build
-    python -m build .
-  displayName: 'Build'
-
-
+    orgname="worldpwn"
+    token=$(System.AccessToken)
+    project="process-time"
+    pipeline_id=2
+    python src/__main__.py --org $orgname --token $token --project $project --pipeline_id $pipeline_id
+  displayName: 'Test — Example Run Trunk Based'
+  env:
+    System.AccessToken: $(System.AccessToken)
