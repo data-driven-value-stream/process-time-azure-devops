@@ -1,8 +1,10 @@
 from azure.devops.v7_1.pipelines.models import Run
+import pprint
 
 
 def get_last_attempt_to_deliver(runs: [Run]) -> Run:
     """Get the last attempt to deliver from the list of pipelines."""
+    pprint.pp(runs)
     if len(runs) == 1:
         return runs[0]
     failed_runs = amount_of_failed_previous_runs(runs)
