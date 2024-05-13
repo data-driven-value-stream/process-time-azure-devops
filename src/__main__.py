@@ -6,14 +6,7 @@ import getopt
 import sys
 
 
-# pipelines_client = PipelinesClient(f'https://dev.azure.com/{azure_devops_organization}', personal_access_token)
-# runs = pipelines_client.list_runs(project, pipeline_id)
-# previous_attempt = get_last_attempt_to_deliver(runs)
-
-# print('hello world 2')
-# 
-
-def help():
+def display_help():
     print('main.py --org <azure-devops-organization> --token <personal_access_token> --project <project> --pipeline-id <pipeline_id>')
 
 
@@ -25,7 +18,7 @@ def parse_arguments(argv) -> ArgumentParseResult:
     opts, args = getopt.getopt(argv, "hi:o:", ["org=", "token=", "project=", "pipeline-id="])
     for opt, arg in opts:
         if opt in ('-h', '--help'):
-            help()
+            display_help()
             sys.exit()
         elif opt in "--org":
             azure_devops_organization = arg
@@ -45,6 +38,16 @@ def parse_arguments(argv) -> ArgumentParseResult:
     return ArgumentParseResult(azure_devops_organization, personal_access_token, project, pipeline_id)
 
 
+def calculate_process_tine(args: ArgumentParseResult) -> None:
+    print('Calculating process time...')
+    pipelines_client = PipelinesClient(f'https://dev.azure.com/{args.azure_devops_organization}', args.personal_access_token)
+    runs = pipelines_client.list_runs(args.project, args.pipeline_id)
+    previous_attempt = get_last_attempt_to_deliver(runs)
+    print(previous_attempt)
+    print('Process time calculated!')
+
+
 if __name__ == "__main__":
     print(process_time_logo)
     arguments = parse_arguments(sys.argv[1:])
+    calculate_process_tine(arguments)
