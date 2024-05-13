@@ -12,9 +12,9 @@ def get_last_attempt_to_deliver(runs: [Run]) -> Run:
     if failed_runs == 0:
         return runs[0]
     else:
-        if len(runs) == failed_runs + 1:
+        if len(runs) == failed_runs:
             return runs[0]
-        return runs[failed_runs + 1]
+        return runs[failed_runs]
 
 
 def amount_of_failed_previous_runs(runs: [Run]) -> int:
