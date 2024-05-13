@@ -11,6 +11,7 @@ def display_help():
 
 
 def parse_arguments(argv) -> ArgumentParseResult:
+    print(argv)
     azure_devops_organization: str | None = None
     personal_access_token: str | None = None
     project: str | None = None
