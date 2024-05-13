@@ -43,7 +43,7 @@ jobs:
           pip install build
 
   test_help:
-    name: Tests — CLI Argument
+    name: Tests — CLI Arguments
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
