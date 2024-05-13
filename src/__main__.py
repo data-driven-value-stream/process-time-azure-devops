@@ -15,7 +15,7 @@ def parse_arguments(argv) -> ArgumentParseResult:
     personal_access_token: str | None = None
     project: str | None = None
     pipeline_id: int | None = None
-    opts, args = getopt.getopt(argv, "hi:o:", ["org=", "token=", "project=", "pipeline-id="])
+    opts, args = getopt.getopt(argv, "h", ["org=", "token=", "project=", "pipeline-id=", "help"])
     for opt, arg in opts:
         if opt in ('-h', '--help'):
             display_help()
