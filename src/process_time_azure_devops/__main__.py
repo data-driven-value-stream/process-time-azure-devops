@@ -44,7 +44,7 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
     print('Calculating process time...')
     url = f'https://dev.azure.com/{args.azure_devops_organization}'
     print(f'Connecting to Azure DevOps Organization: {url}')
-    credentials = BasicAuthentication(args.personal_access_token)
+    credentials = BasicAuthentication('', args.personal_access_token)
     pipelines_client = PipelinesClient(url, credentials)
     runs = pipelines_client.list_runs(args.project, args.pipeline_id)
     previous_attempt = get_last_attempt_to_deliver(runs)
