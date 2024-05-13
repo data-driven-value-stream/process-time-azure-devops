@@ -10,7 +10,7 @@ env:
   
 jobs:
   test:
-    name: Unit Tests
+    name: Tests — Unit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -43,7 +43,7 @@ jobs:
           pip install build
 
   test_help:
-    name: Test Help
+    name: Tests — Help Argument
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,4 +56,4 @@ jobs:
           pip install .
       - name: Test Help
         run: |
-          python src/main.py --h
+          python src/__main__.py --h
