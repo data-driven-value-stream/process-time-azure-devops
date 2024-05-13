@@ -9,21 +9,35 @@ env:
   PYTHON_VERSION: 3.12.2
   
 jobs:
-  build:
-    name: Build and Test
+  test:
+    name: Unit Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install Dependencies & Build
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install .
-          pip install build
-          python -m build .
+          pip install .[test]
       - name: Test
         run: |
           pip install .[test]
           pytest ./tests
+          
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+      - name: Build
+        run: |
+          pip install build
