@@ -12,8 +12,8 @@ variables:
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '$(variables.PYTHON_VERSION)'
-  displayName: 'Use Python $(variables.PYTHON_VERSION)'
+    versionSpec: '$(PYTHON_VERSION)'
+  displayName: 'Use Python $(PYTHON_VERSION)'
 
 - script: |
     python -m pip install --upgrade pip
