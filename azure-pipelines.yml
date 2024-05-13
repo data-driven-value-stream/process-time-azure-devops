@@ -17,10 +17,11 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    pip install .
+    pip install .[build]
   displayName: 'Install dependencies'
 
 - script: |
+    # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
     orgname="worldpwn"
     token=$(System.AccessToken)
     project="process-time"

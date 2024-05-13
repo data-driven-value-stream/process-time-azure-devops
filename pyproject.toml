@@ -24,6 +24,10 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
+build = [
+    "hatchling==1.24.2",
+    "azure-devops==7.1.0b4"
+]
 test = [
     "pytest==8.2.0",
     "azure-devops==7.1.0b4"
