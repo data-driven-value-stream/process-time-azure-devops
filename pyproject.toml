@@ -6,7 +6,8 @@ requires = [
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src"]
+only-include = ["src"]
+sources = ["src"]
 
 [project]
 name = "process_time_azure_devops"
