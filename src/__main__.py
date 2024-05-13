@@ -5,6 +5,7 @@ from arts.process_time_logo import process_time_logo
 from msrest.authentication import BasicAuthentication
 import getopt
 import sys
+import json
 
 
 def display_help():
@@ -45,7 +46,7 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
     pipelines_client = PipelinesClient(f'https://dev.azure.com/{args.azure_devops_organization}', credentials)
     runs = pipelines_client.list_runs(args.project, args.pipeline_id)
     previous_attempt = get_last_attempt_to_deliver(runs)
-    print(previous_attempt)
+    print(json.dumps(previous_attempt.as_dict(), sort_keys=True, indent=4))
     print('Process time calculated!')
 
 
