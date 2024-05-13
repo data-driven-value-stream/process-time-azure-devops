@@ -41,3 +41,19 @@ jobs:
       - name: Build
         run: |
           pip install build
+
+  test_help:
+    name: Test Help
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+      - name: Test Help
+        run: |
+          python src/main.py --h
