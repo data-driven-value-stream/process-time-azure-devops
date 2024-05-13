@@ -1,5 +1,9 @@
-trigger:
-- main
+trigger: none
+
+pr:
+  branches:
+    include:
+      - 'main'
 
 pool:
   vmImage: ubuntu-latest
@@ -23,9 +27,12 @@ steps:
 - script: |
     # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
     orgname="worldpwn"
+    echo "orgname=$orgname"
     token=$(System.AccessToken)
     project="process-time"
+    echo "project=$project"
     pipeline_id=2
+    echo "pipeline_id=$pipeline_id"
     python src/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline_id "$pipeline_id"
   displayName: 'Test — Example Run Trunk Based'
   env:
