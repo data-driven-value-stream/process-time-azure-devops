@@ -1,3 +1,5 @@
+[![Publish](https://github.com/worldpwn/process-time-azure-devops/actions/workflows/publish.yml/badge.svg)](https://github.com/worldpwn/process-time-azure-devops/actions/workflows/publish.yml)
+
 <img width="1597" alt="image" src="https://github.com/worldpwn/process-time-azure-devops/assets/6351780/d8adb7ce-e284-48e2-a56b-65ead73b17a6">
 
 # Local Dev
