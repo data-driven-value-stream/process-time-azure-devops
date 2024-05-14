@@ -52,7 +52,7 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
     credentials = BasicAuthentication('', args.personal_access_token)
     pipelines_client = PipelinesClient(url, credentials)
     runs = pipelines_client.list_runs(args.project, args.pipeline_id)
-    previous_attempt = get_last_attempt_to_deliver(runs)
+    previous_attempt = get_last_attempt_to_deliver(args.current_run_id, runs)
     print(json.dumps(previous_attempt.as_dict(), sort_keys=True, indent=4))
     print('Process time calculated!')
 

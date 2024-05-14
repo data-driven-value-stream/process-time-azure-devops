@@ -4,3 +4,4 @@ class ArgumentParseResult:
         self.personal_access_token = personal_access_token
         self.project = project
         self.pipeline_id = pipeline_id
+        self.current_run_id = current_run_id
