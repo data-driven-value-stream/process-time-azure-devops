@@ -29,14 +29,13 @@ steps:
   displayName: 'Use Python $(PYTHON_VERSION)'
 
 - script: |
-    ls
     cd process-time-azure-devops
-    ls
     python -m pip install --upgrade pip
     pip install .[build]
   displayName: 'Install dependencies'
 
 - script: |
+    cd process-time-azure-devops
     # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
     orgname="worldpwn"
     echo "orgname=$orgname"
