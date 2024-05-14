@@ -31,6 +31,7 @@ steps:
 - script: |
     ls
     cd process-time
+    ls
     python -m pip install --upgrade pip
     pip install .[build]
   displayName: 'Install dependencies'
