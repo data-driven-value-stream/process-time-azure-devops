@@ -1,4 +1,5 @@
 from azure.devops.v7_1.pipelines.pipelines_client import PipelinesClient
+from azure.devops.v7_1.build.build_client import BuildClient
 from process_time_azure_devops.parsers.get_last_attempt_to_deliver import get_last_attempt_to_deliver
 from process_time_azure_devops.models.ArgumentParseResult import ArgumentParseResult
 from process_time_azure_devops.arts.process_time_logo import process_time_logo
@@ -50,10 +51,19 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
     url = f'https://dev.azure.com/{args.azure_devops_organization}'
     print(f'Connecting to Azure DevOps Organization: {url}')
     credentials = BasicAuthentication('', args.personal_access_token)
+
+    # Get pipeline runs
     pipelines_client = PipelinesClient(url, credentials)
     runs = pipelines_client.list_runs(args.project, args.pipeline_id)
     previous_attempt = get_last_attempt_to_deliver(args.current_run_id, runs)
+    print('Previous attempt to deliver:')
     print(json.dumps(previous_attempt.as_dict(), sort_keys=True, indent=4))
+
+    # Get build info based on run
+    build_client = BuildClient(url, credentials)
+    build = build_client.get_build(args.project, previous_attempt.id)
+    print('Build info:')
+    print(json.dumps(build.as_dict(), sort_keys=True, indent=4))
     print('Process time calculated!')
 
 
