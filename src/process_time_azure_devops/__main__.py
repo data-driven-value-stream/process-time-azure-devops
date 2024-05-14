@@ -81,9 +81,9 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
     )
 
     query = GitPullRequestQuery([query_input_commit, query_input_last_merge_commit])
-    pull_request = git_client.get_pull_request_query(query, build.repository.id)
+    pull_request = git_client.get_pull_request_query(query, build.repository.id, args.project)
     print('Pull request info:')
-    print(json.dumps(build.as_dict(), sort_keys=True, indent=4))
+    print(json.dumps(pull_request.as_dict(), sort_keys=True, indent=4))
     
     print('Process time calculated!')
 
