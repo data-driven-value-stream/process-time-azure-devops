@@ -30,7 +30,7 @@ steps:
 
 - script: |
     ls
-    cd process-time
+    cd process-time-azure-devops
     ls
     python -m pip install --upgrade pip
     pip install .[build]
