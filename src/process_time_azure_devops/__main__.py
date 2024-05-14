@@ -48,31 +48,6 @@ def parse_arguments(argv) -> ArgumentParseResult:
     print('================================')
     return ArgumentParseResult(azure_devops_organization, personal_access_token, project, pipeline_id, current_run_id)
 
-def test_request(token):
-    url = "https://dev.azure.com/worldpwn/process-time/_apis/git/repositories/66162f5a-f5ba-4a0a-8be4-d786df78f072/pullrequestquery?api-version=7.0"
-
-    headers = {
-        "Content-Type": "application/json"
-    }
-    data = {
-        "queries": [
-            {
-                "type": 1,
-                "items": ["c62e432cb113be92e60ec324a8d9818c5ab5333f"]
-            },
-            {
-                "type": 2,
-                "items": ["c62e432cb113be92e60ec324a8d9818c5ab5333f"]
-            }
-        ]
-    }
-
-    response = requests.post(url, headers=headers, data=json.dumps(data), auth=("", token))
-
-    # Print the status code and the response body
-    print("Status Code:", response.status_code)
-    print("Response Body:", response.json())
-
 def calculate_process_tine(args: ArgumentParseResult) -> None:
     print('Calculating process time...')
     url = f'https://dev.azure.com/{args.azure_devops_organization}'
@@ -94,9 +69,6 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
 
     commit = build.source_version
     print(f'Commit: {commit}')
-
-    # Test
-    test_request(args.personal_access_token)
 
     # Get pull request that cause pipeline to run
     git_client = GitClient(url, credentials)
