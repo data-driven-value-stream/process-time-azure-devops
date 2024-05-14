@@ -16,7 +16,7 @@ variables:
 resources:
   repositories:
     - repository: process-time
-      name: worldpwn/process-time
+      name: process-time
       ref: main
 
 steps:
