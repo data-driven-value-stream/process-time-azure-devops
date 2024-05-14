@@ -22,14 +22,13 @@ resources:
 
 steps:
 - checkout: process-time
+- checkout: self
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '$(PYTHON_VERSION)'
   displayName: 'Use Python $(PYTHON_VERSION)'
 
 - script: |
-    python --version
-    pip --version
     python -m pip install --upgrade pip
     pip install .[build]
   displayName: 'Install dependencies'
