@@ -20,7 +20,7 @@ resources:
       ref: main
 
 steps:
-- checkout: process-time
+#- checkout: process-time
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '$(PYTHON_VERSION)'
