@@ -9,7 +9,8 @@ import json
 
 
 def display_help():
-    print('main.py --org <azure-devops-organization> --token <personal_access_token> --project <project> --pipeline-id <pipeline_id>')
+    print('main.py --org <azure-devops-organization> --token <personal_access_token> --project <project> '
+          '--pipeline-id <pipeline_id> --current-run-id <current_run_id>')
 
 
 def parse_arguments(argv) -> ArgumentParseResult:
@@ -17,7 +18,8 @@ def parse_arguments(argv) -> ArgumentParseResult:
     personal_access_token: str | None = None
     project: str | None = None
     pipeline_id: int | None = None
-    opts, args = getopt.getopt(argv, "h", ["org=", "token=", "project=", "pipeline-id=", "help"])
+    current_run_id: int | None = None
+    opts, args = getopt.getopt(argv, "h", ["org=", "token=", "project=", "pipeline-id=", "current-run-id=", "help"])
     for opt, arg in opts:
         if opt in ('-h', '--help'):
             display_help()
@@ -30,14 +32,17 @@ def parse_arguments(argv) -> ArgumentParseResult:
             project = arg
         elif opt in "--pipeline-id":
             pipeline_id = int(arg)
+        elif opt in "--current-run-id":
+            current_run_id = int(arg)
 
     print('========== Arguments: ==========')
     print(f'Azure DevOps Organization: {azure_devops_organization}')
     print(f'Personal Access Token: {("*" * len(personal_access_token))[:7]}')
     print(f'Project: {project}')
     print(f'Pipeline ID: {pipeline_id}')
+    print(f'Current Run ID: {current_run_id}')
     print('================================')
-    return ArgumentParseResult(azure_devops_organization, personal_access_token, project, pipeline_id)
+    return ArgumentParseResult(azure_devops_organization, personal_access_token, project, pipeline_id, current_run_id)
 
 
 def calculate_process_tine(args: ArgumentParseResult) -> None:
