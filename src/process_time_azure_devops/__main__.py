@@ -51,8 +51,7 @@ def test_request(token):
     url = "https://dev.azure.com/worldpwn/process-time/_apis/git/repositories/66162f5a-f5ba-4a0a-8be4-d786df78f072/pullrequestquery?api-version=7.0"
 
     headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {token}"
+        "Content-Type": "application/json"
     }
     data = {
         "queries": [
@@ -67,7 +66,7 @@ def test_request(token):
         ]
     }
 
-    response = requests.post(url, headers=headers, data=json.dumps(data))
+    response = requests.post(url, headers=headers, data=json.dumps(data), auth=("", token))
 
     # Print the status code and the response body
     print("Status Code:", response.status_code)
