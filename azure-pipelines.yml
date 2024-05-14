@@ -33,7 +33,7 @@ steps:
     echo "project=$project"
     pipeline_id=2
     echo "pipeline_id=$pipeline_id"
-    current_run_id=22
+    current_run_id=8
     python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
   displayName: 'Test — Example Run Trunk Based'
   env:
