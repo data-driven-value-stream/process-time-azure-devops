@@ -29,6 +29,7 @@ steps:
   displayName: 'Use Python $(PYTHON_VERSION)'
 
 - script: |
+    ls
     python -m pip install --upgrade pip
     pip install .[build]
   displayName: 'Install dependencies'
