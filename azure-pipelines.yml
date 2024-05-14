@@ -13,11 +13,11 @@ variables:
 - name: PYTHON_VERSION
   value: 3.12.2
 
-resources:
-  repositories:
-    - repository: process-time
-      name: process-time
-      ref: main
+#resources:
+#  repositories:
+#    - repository: process-time
+#      name: process-time
+#      ref: main
 
 steps:
 #- checkout: process-time
