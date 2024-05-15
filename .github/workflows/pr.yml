@@ -80,7 +80,12 @@ jobs:
           python -m build .
       - name: Install
         run: |
-          pip install dist/process_time_azure_devops-0.0.5-py3-none-any.whl
+          # Path to the pyproject.toml file
+          file_path="pyproject.toml"
+          # Use grep to find the line with 'version' and then use awk to print the version value
+          version=$(grep 'version =' $file_path | awk -F'"' '{print $2}')
+          # Install the package
+          pip install dist/process_time_azure_devops-$version-py3-none-any.whl
       - name: Test Help -h
         run: |
           pip list
