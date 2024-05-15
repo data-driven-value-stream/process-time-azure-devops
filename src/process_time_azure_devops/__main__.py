@@ -71,16 +71,12 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
 
     # Get pull request that cause pipeline to run
     git_client = GitClient(url, credentials)
-    query_input_commit = GitPullRequestQueryInput(
-        items=[commit],
-        type="commit"
-    )
     query_input_last_merge_commit = GitPullRequestQueryInput(
         items=[commit],
         type="lastMergeCommit"
     )
 
-    query = GitPullRequestQuery([query_input_commit, query_input_last_merge_commit])
+    query = GitPullRequestQuery([query_input_last_merge_commit])
     pull_request = git_client.get_pull_request_query(query, build.repository.id, args.project)
     print('Pull request info:')
     print(json.dumps(pull_request.as_dict(), sort_keys=True, indent=4))
