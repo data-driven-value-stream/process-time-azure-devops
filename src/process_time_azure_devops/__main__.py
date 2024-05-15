@@ -85,7 +85,8 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
     print('PR Query result info:')
     print(json.dumps(query_result.as_dict(), sort_keys=True, indent=4))
 
-    if len(query_result.results) == 0:
+    # If query result is empty it means that run is caused by a commit not in a pull request
+    if len(query_result.results) == 0 or( len(query_result.results) == 1 and query_result.results[0] == {}):
         print('No pull request found for the commit')
         commit_info = git_client.get_commit(commit, build.repository.id, args.project)
         print('Commit info:')
