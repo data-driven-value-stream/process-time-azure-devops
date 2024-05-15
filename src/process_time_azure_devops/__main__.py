@@ -48,6 +48,10 @@ def parse_arguments(argv) -> ArgumentParseResult:
     return ArgumentParseResult(azure_devops_organization, personal_access_token, project, pipeline_id, current_run_id)
 
 def calculate_process_tine(args: ArgumentParseResult) -> None:
+    """Calculate the process time between the first commit of the pull request and the deployment.
+    :rtype Example: 0:43:09.283935
+    """
+
     print('Calculating process time...')
     url = f'https://dev.azure.com/{args.azure_devops_organization}'
     print(f'Connecting to Azure DevOps Organization: {url}')
@@ -103,6 +107,8 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
     process_time = current_run.finish_time - first_commit_time
     print(f'Process time: {process_time}')
     print('Process time calculated!')
+    print(type(process_time))
+    return process_time
 
 
 if __name__ == "__main__":
