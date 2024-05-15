@@ -87,6 +87,10 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
     print('Pull request info:')
     print(json.dumps(pr.as_dict(), sort_keys=True, indent=4))
 
+    first_commit = pr.commits[len(pr.commits) - 1]
+    print("First commit of the pull request:")
+    print(json.dumps(first_commit.as_dict(), sort_keys=True, indent=4))
+
     print('Process time calculated!')
 
 
