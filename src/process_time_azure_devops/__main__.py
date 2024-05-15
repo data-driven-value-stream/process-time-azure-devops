@@ -91,6 +91,13 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
     print("First commit of the pull request:")
     print(json.dumps(first_commit.as_dict(), sort_keys=True, indent=4))
 
+    # Get time difference between first commit and deployment
+    first_commit_time = first_commit.author.date
+    print(f'First commit time: {first_commit_time}')
+    current_run = build_client.get_build(args.project, args.current_run_id)
+    print('Current run info:')
+    print(json.dumps(current_run.as_dict(), sort_keys=True, indent=4))
+
     print('Process time calculated!')
 
 
