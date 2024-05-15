@@ -82,8 +82,8 @@ def calculate_process_tine(args: ArgumentParseResult) -> None:
     print(json.dumps(query_result.as_dict(), sort_keys=True, indent=4))
 
     # Get first commit of the pull request info
-    print(query_result.results[0][commit])
-    print(json.dumps(query_result.results[0][commit].as_dict(), sort_keys=True, indent=4))
+    print(query_result.results[0][commit][0])
+    print(json.dumps(query_result.results[0][commit][0].as_dict(), sort_keys=True, indent=4))
     pr = git_client.get_pull_request(build.repository.id, query_result.results[0][0].pull_request_id, args.project, include_commits=True)
     print('Pull request info:')
     print(json.dumps(pr.as_dict(), sort_keys=True, indent=4))
