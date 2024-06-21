@@ -5,12 +5,14 @@ from azure.devops.v7_1.git.models import GitPullRequestQuery, GitPullRequestQuer
 from azure.devops.v7_1.build.models import Build
 from process_time_azure_devops.parsers.get_last_attempt_to_deliver import get_last_attempt_to_deliver
 from process_time_azure_devops.models.ArgumentParseResult import ArgumentParseResult
+from process_time_azure_devops.models.JsonResult import JsonResult
 from process_time_azure_devops.arts.process_time_logo import process_time_logo
 from msrest.authentication import BasicAuthentication
 import getopt
 import sys
 import json
 import datetime
+
 
 def display_help():
     print('main.py --org <azure-devops-organization> --token <personal_access_token> --project <project> '
@@ -48,6 +50,7 @@ def parse_arguments(argv) -> ArgumentParseResult:
     print('================================')
     return ArgumentParseResult(azure_devops_organization, personal_access_token, project, pipeline_id, current_run_id)
 
+
 def get_first_commit_date(args: ArgumentParseResult, query_result, git_client: GitClient, commit: str, build: Build) -> datetime.datetime:
     # If query result is empty it means that run is caused by a commit not in a pull request
     if len(query_result.results) == 0 or (len(query_result.results) == 1 and query_result.results[0] == {}):
@@ -73,7 +76,7 @@ def get_first_commit_date(args: ArgumentParseResult, query_result, git_client: G
     return first_commit_time
 
 
-def calculate_process_tine(args: ArgumentParseResult) -> datetime.timedelta:
+def calculate_process_time(args: ArgumentParseResult) -> JsonResult:
     """Calculate the process time between the first commit of the pull request and the deployment.
     :rtype datetime.timedelta Example: 0:43:09.283935
     """
@@ -123,10 +126,24 @@ def calculate_process_tine(args: ArgumentParseResult) -> datetime.timedelta:
     process_time = current_run.finish_time - first_commit_date
     print(f'Process time: {process_time}')
     print('Process time calculated!')
-    return process_time
+
+    result = JsonResult(
+        repository_url=url,
+        process_time_in_minutes=process_time.total_seconds() / 60,
+        production_build_id=build.id,
+        production_build_url="",
+        first_change_pull_request_id=query_result.results[0].,
+        first_change_pull_request_url="",
+    )
+
+    return result
 
 
 if __name__ == "__main__":
     print(process_time_logo)
     arguments = parse_arguments(sys.argv[1:])
-    calculate_process_tine(arguments)
+    process_time_result = calculate_process_time(arguments)
+    print('========== Result: ==========')
+    print(process_time_result.to_json())
+    print('=============================')
+

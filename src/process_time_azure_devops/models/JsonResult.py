@@ -7,8 +7,8 @@ class JsonResult:
                  process_time_in_minutes: int,
                  production_build_id: int,
                  production_build_url: str,
-                 first_change_pull_request_id: int,
-                 first_change_pull_request_url: str):
+                 first_change_pull_request_id: int | None,
+                 first_change_pull_request_url: str | None):
         self.repositoryUrl = repository_url
         self.processTimeInMinutes = process_time_in_minutes
         self.productionBuildId = production_build_id
