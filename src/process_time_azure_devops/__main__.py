@@ -6,6 +6,7 @@ from azure.devops.v7_1.build.models import Build
 from process_time_azure_devops.parsers.get_last_attempt_to_deliver import get_last_attempt_to_deliver
 from process_time_azure_devops.models.ArgumentParseResult import ArgumentParseResult
 from process_time_azure_devops.arts.process_time_logo import process_time_logo
+from process_time_azure_devops.parsers.find_pr import find_pr
 from msrest.authentication import BasicAuthentication
 import getopt
 import sys
@@ -48,9 +49,11 @@ def parse_arguments(argv) -> ArgumentParseResult:
     print('================================')
     return ArgumentParseResult(azure_devops_organization, personal_access_token, project, pipeline_id, current_run_id)
 
+
 def get_first_commit_date(args: ArgumentParseResult, query_result, git_client: GitClient, commit: str, build: Build) -> datetime.datetime:
-    # If query result is empty it means that run is caused by a commit not in a pull request
-    if len(query_result.results) == 0 or (len(query_result.results) == 1 and query_result.results[0] == {}):
+    pr_start_time = find_pr(project=args.project, query_result=query_result, git_client=git_client, commit=commit, build=build)
+    # If pr_start_time is None it means that run is caused by a commit not in a pull request
+    if pr_start_time is None:
         print('No pull request found for the commit')
         commit_info = git_client.get_commit(commit, build.repository.id, args.project)
         print('Commit info:')
@@ -58,19 +61,7 @@ def get_first_commit_date(args: ArgumentParseResult, query_result, git_client: G
         first_commit_time = commit_info.author.date
         print(f'First commit time: {first_commit_time}')
         return commit_info.author.date
-    # If PR is found
-    # Get first commit of the pull request info
-    pr_id = query_result.results[0][commit][0].pull_request_id
-    pr = git_client.get_pull_request(build.repository.id, pr_id, args.project, include_commits=True)
-    print('Pull request info:')
-    print(json.dumps(pr.as_dict(), sort_keys=True, indent=4))
-
-    first_commit = pr.commits[len(pr.commits) - 1]
-    print("First commit of the pull request:")
-    print(json.dumps(first_commit.as_dict(), sort_keys=True, indent=4))
-    first_commit_time = first_commit.author.date
-    print(f'First commit time: {first_commit_time}')
-    return first_commit_time
+    return pr_start_time
 
 
 def calculate_process_tine(args: ArgumentParseResult) -> datetime.timedelta:
