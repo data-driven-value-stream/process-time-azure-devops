@@ -8,6 +8,7 @@ from process_time_azure_devops.models.ArgumentParseResult import ArgumentParseRe
 from process_time_azure_devops.models.JsonResult import JsonResult
 from process_time_azure_devops.arts.process_time_logo import process_time_logo
 from process_time_azure_devops.parsers.find_pr import find_pr
+from process_time_azure_devops.parsers.get_first_commit_date_from_pr import get_first_commit_date_from_pr
 from msrest.authentication import BasicAuthentication
 import getopt
 import sys
@@ -53,9 +54,9 @@ def parse_arguments(argv) -> ArgumentParseResult:
 
 
 def get_first_commit_date(args: ArgumentParseResult, query_result, git_client: GitClient, commit: str, build: Build) -> datetime.datetime:
-    pr_start_time = find_pr(project=args.project, query_result=query_result, git_client=git_client, commit=commit, build=build)
+    pr = find_pr(project=args.project, query_result=query_result, git_client=git_client, commit=commit, build=build)
     # If pr_start_time is None it means that run is caused by a commit not in a pull request
-    if pr_start_time is None:
+    if pr is None:
         print('No pull request found for the commit')
         commit_info = git_client.get_commit(commit, build.repository.id, args.project)
         print('Commit info:')
@@ -63,7 +64,7 @@ def get_first_commit_date(args: ArgumentParseResult, query_result, git_client: G
         first_commit_time = commit_info.author.date
         print(f'First commit time: {first_commit_time}')
         return commit_info.author.date
-    return pr_start_time
+    return get_first_commit_date_from_pr(pr)
 
 
 def calculate_process_time(args: ArgumentParseResult) -> JsonResult:
