@@ -12,6 +12,7 @@ from msrest.authentication import BasicAuthentication
 import getopt
 import sys
 import json
+import math
 
 
 def display_help():
@@ -115,7 +116,7 @@ def calculate_process_time(args: ArgumentParseResult) -> JsonResult:
 
     result = JsonResult(
         repository_url=url,
-        process_time_in_minutes=process_time.total_seconds() / 60,
+        process_time_in_minutes=math.floor(process_time.total_seconds() / 60),
         production_build_id=build.id,
         production_build_url="",
         first_change_pull_request_id=None,
