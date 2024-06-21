@@ -118,8 +118,8 @@ def calculate_process_time(args: ArgumentParseResult) -> JsonResult:
         process_time_in_minutes=process_time.total_seconds() / 60,
         production_build_id=build.id,
         production_build_url="",
-        first_change_pull_request_id=query_result.results[0],
-        first_change_pull_request_url="",
+        first_change_pull_request_id=None,
+        first_change_pull_request_url=None,
     )
 
     return result
