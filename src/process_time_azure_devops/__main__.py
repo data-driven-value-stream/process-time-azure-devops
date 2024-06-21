@@ -114,13 +114,15 @@ def calculate_process_time(args: ArgumentParseResult) -> JsonResult:
     print(f'Process time: {process_time}')
     print('Process time calculated!')
 
+    # https://dev.azure.com/worldpwn/process-time/_git/process-time
+    repository_url = current_run.repository.url
     result = JsonResult(
-        repository_url=url,
+        repository_url=repository_url,
         process_time_in_minutes=math.ceil(process_time.total_seconds() / 60),
         production_build_id=build.id,
-        production_build_url="",
-        first_change_pull_request_id=None,
-        first_change_pull_request_url=None,
+        production_build_url=f"{repository_url}pullrequest/${1}",
+        first_change_pull_request_id=pr.pull_request_id,
+        first_change_pull_request_url=f"{repository_url}pullrequest/${pr.pull_request_id}",
     )
 
     return result
