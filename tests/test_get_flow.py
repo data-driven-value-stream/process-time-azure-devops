@@ -13,7 +13,7 @@ def test_pass_production_branch_name_and_development_branch_name_should_return_g
         pipeline_id=1,
         current_run_id=1,
         production_branch_name='production',
-        deployment_branch_name='development')
+        development_branch_name='development')
     flow = get_flow(args)
     assert isinstance(flow, GitFlow)
 
@@ -26,7 +26,7 @@ def test_pass_none_return_trunk_based_flow():
         pipeline_id=1,
         current_run_id=1,
         production_branch_name=None,
-        deployment_branch_name=None)
+        development_branch_name=None)
     flow = get_flow(args)
     assert isinstance(flow, TrunkBasedFlow)
 
@@ -39,7 +39,7 @@ def test_pass_production_branch_name_and_development_branch_none_should_throw():
         pipeline_id=1,
         current_run_id=1,
         production_branch_name='some_name',
-        deployment_branch_name=None)
+        development_branch_name=None)
     with pytest.raises(ValueError) as exc_info:
         flow = get_flow(args)
         raise ValueError()
