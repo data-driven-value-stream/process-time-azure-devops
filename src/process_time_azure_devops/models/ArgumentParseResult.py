@@ -5,7 +5,8 @@ class ArgumentParseResult:
                  project: str,
                  pipeline_id: int,
                  current_run_id: int,
-                 production_branch_name: str | None):
+                 production_branch_name: str | None,
+                 deployment_branch_name: str | None):
         """
          :param str | None production_branch_name: Is used to determine if it is a GitFlow, if it is a Trunk Based should be None
         """
@@ -14,3 +15,6 @@ class ArgumentParseResult:
         self.project = project
         self.pipeline_id = pipeline_id
         self.current_run_id = current_run_id
+        self.production_branch_name = production_branch_name
+        self.deployment_branch_name = deployment_branch_name
+

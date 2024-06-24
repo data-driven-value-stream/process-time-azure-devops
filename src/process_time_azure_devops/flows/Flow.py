@@ -8,3 +8,4 @@ class Flow(ABC):
     @abstractmethod
     def calculate_process_time(self):
         pass
+    
