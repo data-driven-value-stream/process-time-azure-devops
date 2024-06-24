@@ -42,11 +42,27 @@ steps:
     token=$(System.AccessToken)
     project="process-time"
     echo "project=$project"
+    pipeline_id=3
+    echo "pipeline_id=$pipeline_id"
+    current_run_id=122
+    python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id --production-branch-name "production" --development-branch-name "development"
+  displayName: 'Test — Example Git Flow — PR'
+  env:
+    System.AccessToken: $(System.AccessToken)
+    
+- script: |
+    cd process-time-azure-devops
+    # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
+    orgname="worldpwn"
+    echo "orgname=$orgname"
+    token=$(System.AccessToken)
+    project="process-time"
+    echo "project=$project"
     pipeline_id=2
     echo "pipeline_id=$pipeline_id"
     current_run_id=157
     python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
-  displayName: 'Test — Example Run Trunk Based — PR'
+  displayName: 'Test — Example Run Trunk-Based — PR'
   env:
     System.AccessToken: $(System.AccessToken)
     
@@ -62,6 +78,6 @@ steps:
     echo "pipeline_id=$pipeline_id"
     current_run_id=159
     python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
-  displayName: 'Test — Example Run Trunk Based — no PR'
+  displayName: 'Test — Example Run Trunk-Based — no PR'
   env:
     System.AccessToken: $(System.AccessToken)
