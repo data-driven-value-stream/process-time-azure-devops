@@ -4,6 +4,7 @@ from process_time_azure_devops.flows.TrunkBasedFlow import TrunkBasedFlow
 from process_time_azure_devops.flows.GitFlow import GitFlow
 import pytest
 
+
 def test_pass_production_branch_name_and_development_branch_name_should_return_git_flow():
     args = ArgumentParseResult(
         azure_devops_organization='azure',
@@ -28,6 +29,7 @@ def test_pass_none_return_trunk_based_flow():
         deployment_branch_name=None)
     flow = get_flow(args)
     assert isinstance(flow, TrunkBasedFlow)
+
 
 def test_pass_production_branch_name_and_development_branch_none_should_throw():
     args = ArgumentParseResult(
