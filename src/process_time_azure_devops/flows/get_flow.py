@@ -8,9 +8,9 @@ def get_flow(args: ArgumentParseResult) -> Flow:
     """
     Get the flow based on the arguments
     """
-    if args.production_branch_name is None and args.deployment_branch_name is None:
+    if args.production_branch_name is None and args.development_branch_name is None:
         return TrunkBasedFlow(args)
-    elif args.production_branch_name and args.deployment_branch_name:
+    elif args.production_branch_name and args.development_branch_name:
         return GitFlow(args)
     else:
         raise ValueError('Cannot determine the flow based on the arguments provided. '
