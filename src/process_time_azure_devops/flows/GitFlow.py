@@ -1,3 +1,8 @@
+import json
+
+from azure.devops.v7_1.build import BuildClient
+from azure.devops.v7_1.pipelines import PipelinesClient
+from msrest.authentication import BasicAuthentication
 from process_time_azure_devops.models.ArgumentParseResult import ArgumentParseResult
 from process_time_azure_devops.models.JsonResult import JsonResult
 from process_time_azure_devops.flows.Flow import Flow
@@ -12,6 +17,19 @@ class GitFlow(Flow):
 
     def calculate_process_time(self) -> JsonResult:
         """
-        Calculate the process time for the Git Flow
-        """
+         Calculate the process time for the Trunk Based Flow.
+         Calculate the process time between the first commit of the pull request to development branch
+         to the deployment from production branch.
+         :rtype datetime.timedelta Example: 0:43:09.283935
+         """
+        print('[Git Flow] Calculating process time...')
+        url = f'https://dev.azure.com/{self.args.azure_devops_organization}'
+        print(f'Connecting to Azure DevOps Organization: {url}')
+        credentials = BasicAuthentication('', self.args.personal_access_token)
+
+        # Get builds
+        build_client = BuildClient(url, credentials)
+        builds = build_client.get_builds(self.args.project, definitions=[self.args.pipeline_id])
+        print('Builds info:')
+        print(json.dumps(builds.as_dict(), sort_keys=True, indent=4))
         return 1

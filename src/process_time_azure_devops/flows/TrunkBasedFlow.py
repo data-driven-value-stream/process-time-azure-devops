@@ -27,7 +27,7 @@ class TrunkBasedFlow(Flow):
         :rtype datetime.timedelta Example: 0:43:09.283935
         """
 
-        print('Calculating process time...')
+        print('[Trunk-Based] Calculating process time...')
         url = f'https://dev.azure.com/{self.args.azure_devops_organization}'
         print(f'Connecting to Azure DevOps Organization: {url}')
         credentials = BasicAuthentication('', self.args.personal_access_token)
