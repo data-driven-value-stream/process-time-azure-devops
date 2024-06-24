@@ -30,8 +30,6 @@ def test_pass_none_return_trunk_based_flow():
     assert isinstance(flow, TrunkBasedFlow)
 
 def test_pass_production_branch_name_and_development_branch_none_should_throw():
-    with pytest.raises(ValueError) as exc_info:
-        raise ValueError()
     args = ArgumentParseResult(
         azure_devops_organization='azure',
         personal_access_token='token',
@@ -40,5 +38,7 @@ def test_pass_production_branch_name_and_development_branch_none_should_throw():
         current_run_id=1,
         production_branch_name='some_name',
         deployment_branch_name=None)
-    flow = get_flow(args)
+    with pytest.raises(ValueError) as exc_info:
+        flow = get_flow(args)
+        raise ValueError()
 
