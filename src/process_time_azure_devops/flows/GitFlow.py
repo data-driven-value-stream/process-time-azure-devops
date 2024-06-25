@@ -70,7 +70,7 @@ class GitFlow(Flow):
                                                        branch_name=f"refs/heads/{self.args.development_branch_name}"))
 
         development_build_right_after_last_successful_production_build = next(
-            (build for build in dev_branches_builds.reverse()
+            (build for build in reversed(dev_branches_builds)
              if previous_build.id < build.id < current_build.id),
             None)
         print('First Development Build after last successful info:')
