@@ -1,4 +1,5 @@
 import json
+import math
 
 from azure.devops.v7_1.build import BuildClient
 from azure.devops.v7_1.pipelines import PipelinesClient
@@ -6,6 +7,7 @@ from msrest.authentication import BasicAuthentication
 from process_time_azure_devops.models.ArgumentParseResult import ArgumentParseResult
 from process_time_azure_devops.models.JsonResult import JsonResult
 from process_time_azure_devops.flows.Flow import Flow
+from process_time_azure_devops.parsers.get_first_commit_date import get_first_commit_date
 
 
 class GitFlow(Flow):
@@ -77,17 +79,37 @@ class GitFlow(Flow):
         print(json.dumps(development_build_right_after_last_successful_production_build.as_dict(),
                          sort_keys=True, indent=4))
 
-        # Get pipeline runs
-        # pipelines_client = PipelinesClient(url, credentials)
-        # runs = pipelines_client.list_runs(self.args.project, self.args.pipeline_id)
-        # for run in runs:
-        #     print(json.dumps(run.as_dict(), sort_keys=True, indent=4))
+        (first_commit_date, pr) = get_first_commit_date(
+            project=self.args.project,
+            credentials=credentials,
+            url=url,
+            build=development_build_right_after_last_successful_production_build,
+            commit=development_build_right_after_last_successful_production_build.source.version)
 
-        # Get builds that where source_branch == development_branch_name
-        # builds = (build_client.get_builds(self.args.project,
-        #                                  definitions=[self.args.pipeline_id],
-        #                                  branch_name=f"refs/heads/{self.args.development_branch_name}"))
-        # print(f'Builds info (source_branch {self.args.development_branch_name})')
-        # for b in builds:
-        #     print(json.dumps(b.as_dict(), sort_keys=True, indent=4))
-        # return 1
+        # Get time difference between first commit and deployment
+        current_run = build_client.get_build(self.args.project, self.args.current_run_id)
+        print('Current run info:')
+        print(json.dumps(current_run.as_dict(), sort_keys=True, indent=4))
+        print(f'Current run time: {current_run.finish_time}')
+
+        process_time = current_run.finish_time - first_commit_date
+        print(f'Process time: {process_time}')
+        print('Process time calculated!')
+
+        repository_url = current_run.repository.url
+        first_change_pull_request_id = None
+        first_change_pull_request_url = None
+        if pr is not None:
+            first_change_pull_request_id = pr.pull_request_id
+            first_change_pull_request_url = f"{repository_url}/pullrequest/{pr.pull_request_id}"
+
+        result = JsonResult(
+            repository_url=repository_url,
+            process_time_in_minutes=math.ceil(process_time.total_seconds() / 60),
+            production_build_id=current_build.id,
+            production_build_url=repository_url.replace("/_git/process-time",
+                                                        "") + f"/_build/results?buildId={current_build.id}",
+            first_change_pull_request_id=first_change_pull_request_id,
+            first_change_pull_request_url=first_change_pull_request_url
+        )
+        return result

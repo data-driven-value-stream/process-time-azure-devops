@@ -7,7 +7,7 @@ from process_time_azure_devops.parsers.get_last_attempt_to_deliver import get_la
 from process_time_azure_devops.models.ArgumentParseResult import ArgumentParseResult
 from process_time_azure_devops.models.JsonResult import JsonResult
 from process_time_azure_devops.parsers.find_pr import find_pr
-from process_time_azure_devops.parsers.get_first_commit_date_from_pr import get_first_commit_date_from_pr
+from process_time_azure_devops.parsers.get_first_commit_date import get_first_commit_date
 from msrest.authentication import BasicAuthentication
 import json
 import math
@@ -17,6 +17,7 @@ class TrunkBasedFlow(Flow):
     """
     Trunk Based Flow
     """
+
     def __init__(self, args: ArgumentParseResult):
         self.args = args
 
@@ -49,30 +50,12 @@ class TrunkBasedFlow(Flow):
         print(f'Commit: {commit}')
 
         # Get pull request that cause pipeline to run
-        git_client = GitClient(url, credentials)
-        query_input_last_merge_commit = GitPullRequestQueryInput(
-            items=[commit],
-            type="lastMergeCommit"
-        )
-
-        query = GitPullRequestQuery([query_input_last_merge_commit])
-        query_result = git_client.get_pull_request_query(query, build.repository.id, self.args.project)
-        print('PR Query result info:')
-        print(json.dumps(query_result.as_dict(), sort_keys=True, indent=4))
-
-        # If query result is empty it means that run is caused by a commit not in a pull request
-        # find first pr
-        pr = find_pr(project=args.project, query_result=query_result, git_client=git_client, commit=commit, build=build)
-        if pr is None:
-            print('No pull request found for the commit')
-            commit_info = git_client.get_commit(commit, build.repository.id, self.args.project)
-            print('Commit info:')
-            print(json.dumps(commit_info.as_dict(), sort_keys=True, indent=4))
-            first_commit_time = commit_info.author.date
-            print(f'First commit time: {first_commit_time}')
-            first_commit_date = commit_info.author.date
-        else:
-            first_commit_date = get_first_commit_date_from_pr(pr)
+        (first_commit_date, pr) = get_first_commit_date(
+            project=self.args.project,
+            credentials=credentials,
+            url=url,
+            commit=commit,
+            build=build)
 
         # Get time difference between first commit and deployment
         current_run = build_client.get_build(self.args.project, self.args.current_run_id)
@@ -95,7 +78,8 @@ class TrunkBasedFlow(Flow):
             repository_url=repository_url,
             process_time_in_minutes=math.ceil(process_time.total_seconds() / 60),
             production_build_id=build.id,
-            production_build_url=repository_url.replace("/_git/process-time", "") + f"/_build/results?buildId={build.id}",
+            production_build_url=repository_url.replace("/_git/process-time",
+                                                        "") + f"/_build/results?buildId={build.id}",
             first_change_pull_request_id=first_change_pull_request_id,
             first_change_pull_request_url=first_change_pull_request_url
         )

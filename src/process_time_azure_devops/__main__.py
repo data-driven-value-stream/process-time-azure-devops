@@ -7,7 +7,7 @@ from process_time_azure_devops.models.ArgumentParseResult import ArgumentParseRe
 from process_time_azure_devops.models.JsonResult import JsonResult
 from process_time_azure_devops.arts.process_time_logo import process_time_logo
 from process_time_azure_devops.parsers.find_pr import find_pr
-from process_time_azure_devops.parsers.get_first_commit_date_from_pr import get_first_commit_date_from_pr
+from process_time_azure_devops.parsers.get_first_commit_date import get_first_commit_date_from_pr
 from process_time_azure_devops.flows.get_flow import get_flow
 from msrest.authentication import BasicAuthentication
 import getopt
