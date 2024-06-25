@@ -52,7 +52,7 @@ steps:
   env:
     System.AccessToken: $(System.AccessToken)
 
-- publish: $(System.DefaultWorkingDirectory)/process_time_result_157.json
+- publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_157.json
   artifact: process_time_result_157
     
 - script: |
@@ -73,5 +73,5 @@ steps:
   env:
     System.AccessToken: $(System.AccessToken)
 
-- publish: $(System.DefaultWorkingDirectory)/process_time_result_159.json
+- publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_159.json
   artifact: process_time_result_159
