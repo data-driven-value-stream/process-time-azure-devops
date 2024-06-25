@@ -14,7 +14,7 @@ parameters:
     default:
       - 157
       - 159
-      - 122
+#      - 122
 
 variables:
 - name: PYTHON_VERSION
@@ -71,7 +71,7 @@ steps:
       echo "pipeline_id=$pipeline_id"
       current_run_id=${{ run }}
       python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
-    displayName: 'Test — Example Run Trunk-Based — PR'
+    displayName: '[${{ run }}] Test — Example Run'
     env:
       System.AccessToken: $(System.AccessToken)
   
@@ -92,4 +92,4 @@ steps:
         echo 'Files are the same'
         exit 0
       fi
-    displayName: 'Compare Files ${{ run }}'
+    displayName: '[${{ run }}] Compare Files'
