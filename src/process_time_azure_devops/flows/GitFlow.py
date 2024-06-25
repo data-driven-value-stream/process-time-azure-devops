@@ -46,12 +46,6 @@ class GitFlow(Flow):
         prod_branches_builds = (build_client.get_builds(self.args.project,
                                                         definitions=[self.args.pipeline_id],
                                                         branch_name=f"refs/heads/{self.args.production_branch_name}"))
-        # print("-----------------------------------")
-        # for i in prod_branches_builds:
-        #     print(json.dumps(i.as_dict(), sort_keys=True, indent=4))
-        # print("-----------------------------------")
-        # Find the previous build from production branch
-        # Get index of the current build
         current_build = next((build for build in prod_branches_builds if build.id == self.args.current_run_id),
                              None)
         if current_build is None:
@@ -68,6 +62,18 @@ class GitFlow(Flow):
         previous_build = prod_branches_builds[index_current_build + 1]
         print('Previous Build info:')
         print(json.dumps(previous_build.as_dict(), sort_keys=True, indent=4))
+
+        # Now we need to find FIRST build for development branch
+        # where id is bigger than previous_build.
+        dev_branches_builds = (build_client.get_builds(self.args.project,
+                                                       definitions=[self.args.pipeline_id],
+                                                       branch_name=f"refs/heads/{self.args.development_branch_name}"))
+
+        development_build_right_after_last_successful_production_build = next(
+            (build for build in dev_branches_builds if build.id > previous_build.id), None)
+        print('First Development Build after last successful info:')
+        print(json.dumps(development_build_right_after_last_successful_production_build.as_dict(), 
+                         sort_keys=True, indent=4))
 
         # Get pipeline runs
         # pipelines_client = PipelinesClient(url, credentials)
