@@ -35,6 +35,7 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
+    set -e
     cd process-time-azure-devops
     # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
     orgname="worldpwn"
@@ -46,8 +47,6 @@ steps:
     echo "pipeline_id=$pipeline_id"
     current_run_id=157
     python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
-    echo "$PWD"
-    ls
   displayName: 'Test — Example Run Trunk Based — PR'
   env:
     System.AccessToken: $(System.AccessToken)
@@ -56,6 +55,7 @@ steps:
   artifact: process_time_result_157
     
 - script: |
+    set -e
     cd process-time-azure-devops
     # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
     orgname="worldpwn"
@@ -67,11 +67,22 @@ steps:
     echo "pipeline_id=$pipeline_id"
     current_run_id=159
     python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
-    echo "$PWD"
-    ls
   displayName: 'Test — Example Run Trunk Based — no PR'
   env:
     System.AccessToken: $(System.AccessToken)
 
 - publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_159.json
   artifact: process_time_result_159
+  
+- script: |
+    set -e
+    
+    diff --brief <(sort $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_159.json) <(sort $(System.DefaultWorkingDirectory)/process-time-azure-devops/tests_snapshots/process_time_result_159.json) >/dev/null
+    comp_value=$?
+    
+    if [ $comp_value -eq 1 ]
+    then
+      echo "do something because they're different"
+    else
+      echo "do something because they're identical"
+    fi
