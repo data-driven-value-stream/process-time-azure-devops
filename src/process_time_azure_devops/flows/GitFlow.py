@@ -29,8 +29,16 @@ class GitFlow(Flow):
 
         # Get builds
         build_client = BuildClient(url, credentials)
-        builds = build_client.get_builds(self.args.project, definitions=[self.args.pipeline_id])
-        print('Builds info:')
+
+        build = build_client.get_build(self.args.project, self.args.current_run_id)
+        print('Current Build info:')
+        print(json.dumps(build.as_dict(), sort_keys=True, indent=4))
+
+        # Get builds that where source_branch == development_branch_name
+        builds = build_client.get_builds(self.args.project, 
+                                         definitions=[self.args.pipeline_id],
+                                         branch_name=self.args.development_branch_name)
+        print(f'Builds info (source_branch {self.args.development_branch_name})')
         for b in builds:
             print(json.dumps(b.as_dict(), sort_keys=True, indent=4))
         return 1
