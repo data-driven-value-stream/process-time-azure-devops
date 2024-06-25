@@ -52,7 +52,7 @@ steps:
       token=$(System.AccessToken)
       project="process-time"
       echo "project=$project"
-      pipeline_id={{ run.pipeline_id }}
+      pipeline_id=${{ run.pipeline_id }}
       echo "pipeline_id=$pipeline_id"
       current_run_id=${{ run.run_id }}
       
