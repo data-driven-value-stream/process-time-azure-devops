@@ -51,7 +51,8 @@ steps:
       echo "project=$project"
       pipeline_id=2
       echo "pipeline_id=$pipeline_id"
-      current_run_id=${{ run }}
+      current_run_id=${{ run }}?
+      
       if [ $current_run_id -eq 122 ];
       then
         python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id --production-branch-name "production" --development-branch-name "development"
