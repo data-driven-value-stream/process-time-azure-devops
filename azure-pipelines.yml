@@ -44,7 +44,6 @@ steps:
 - ${{ each run in parameters.test_snapshots_runs }}: 
   - script: |
       cd process-time-azure-devops
-      # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
       orgname="worldpwn"
       echo "orgname=$orgname"
       token=$(System.AccessToken)
@@ -53,7 +52,7 @@ steps:
       pipeline_id=2
       echo "pipeline_id=$pipeline_id"
       current_run_id=${{ run }}
-      if [ ${{ run }} -eq 122 ];
+      if [ $current_run_id -eq 122 ];
       then
         python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id --production-branch-name "production" --development-branch-name "development"
       else
@@ -81,21 +80,3 @@ steps:
         exit 0
       fi
     displayName: '[${{ run }}] Compare Files'
-    
-    #  - script: |
-    #      set -e
-    #      cd process-time-azure-devops
-    #      # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
-    #      orgname="worldpwn"
-    #      echo "orgname=$orgname"
-    #      token=$(System.AccessToken)
-    #      project="process-time"
-    #      echo "project=$project"
-    #      pipeline_id=3
-    #      echo "pipeline_id=$pipeline_id"
-    #      current_run_id=${{ run }}
-    #      python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id --production-branch-name "production" --development-branch-name "development"
-    #    displayName: 'Test — Example Git Flow — PR'
-    #    env:
-    #      System.AccessToken: $(System.AccessToken)
-    #     
