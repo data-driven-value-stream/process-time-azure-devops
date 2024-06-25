@@ -12,6 +12,7 @@ class GitFlow(Flow):
     """
     Git Flow
     """
+
     def __init__(self, args: ArgumentParseResult):
         self.args = args
 
@@ -31,9 +32,8 @@ class GitFlow(Flow):
         build_client = BuildClient(url, credentials)
 
         # build = build_client.get_build(self.args.project, self.args.current_run_id)
-        print('Current Build info:')
+        # print('Current Build info:')
         # print(json.dumps(build.as_dict(), sort_keys=True, indent=4))
-
 
         # IDEA:
         # Get current BUILD from production branch
@@ -42,15 +42,18 @@ class GitFlow(Flow):
         # If none find look for previous previous build from production branch
         # Repeat until find the build from development branch.
 
-
         # Doing IDEA:
         prod_branches_builds = (build_client.get_builds(self.args.project,
-                                          definitions=[self.args.pipeline_id],
-                                          branch_name=f"refs/heads/{self.args.production_branch_name}"))
+                                                        definitions=[self.args.pipeline_id],
+                                                        branch_name=f"refs/heads/{self.args.production_branch_name}"))
+        print("-----------------------------------")
+        for i in prod_branches_builds:
+            print(json.dumps(i.as_dict(), sort_keys=True, indent=4))
+        print("-----------------------------------")
         # Find the previous build from production branch
         # Get index of the current build
         current_build = next((build for build in prod_branches_builds if build.id == self.args.current_run_id),
-                                   None)
+                             None)
         if current_build is None:
             raise ValueError(f'Current build not found in production branch {self.args.current_run_id}')
 
@@ -65,7 +68,7 @@ class GitFlow(Flow):
         previous_build = prod_branches_builds[index_current_build - 1]
         print('Previous Build info:')
         print(json.dumps(previous_build.as_dict(), sort_keys=True, indent=4))
-        
+
         # Get pipeline runs
         # pipelines_client = PipelinesClient(url, credentials)
         # runs = pipelines_client.list_runs(self.args.project, self.args.pipeline_id)
