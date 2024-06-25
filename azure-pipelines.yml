@@ -35,6 +35,7 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
+    set -e
     cd process-time-azure-devops
     # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
     orgname="worldpwn"
@@ -65,8 +66,12 @@ steps:
   displayName: 'Test — Example Run Trunk-Based — PR'
   env:
     System.AccessToken: $(System.AccessToken)
+
+- publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_157.json
+  artifact: process_time_result_157
     
 - script: |
+    set -e
     cd process-time-azure-devops
     # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
     orgname="worldpwn"
@@ -81,3 +86,31 @@ steps:
   displayName: 'Test — Example Run Trunk-Based — no PR'
   env:
     System.AccessToken: $(System.AccessToken)
+
+- publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_159.json
+  artifact: process_time_result_159
+  
+- script: |
+    set -e
+    
+    # 157 example    
+    snap157=$(System.DefaultWorkingDirectory)/process-time-azure-devops/tests_snapshots/process_time_result_157.json
+    result157=$(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_157.json
+    diff --brief <(sort $snap157) <(sort $result157) >/dev/null
+    comp_value_157=$?
+    
+    # 159 example   
+    snap159=$(System.DefaultWorkingDirectory)/process-time-azure-devops/tests_snapshots/process_time_result_159.json
+    result159=$(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_159.json
+    diff --brief <(sort $snap159) <(sort $result159) >/dev/null
+    comp_value_159=$?
+    
+    if [ $comp_value_157 -eq 1 ] || [ $comp_value_159 -eq 1 ];
+    then
+      echo 'Files are not the same'
+      echo 1
+    else
+      echo 'Files are the same'
+      exit 0
+    fi
+  displayName: 'Compare Files'
