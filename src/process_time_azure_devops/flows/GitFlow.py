@@ -30,9 +30,9 @@ class GitFlow(Flow):
         # Get builds
         build_client = BuildClient(url, credentials)
 
-        build = build_client.get_build(self.args.project, self.args.current_run_id)
+        # build = build_client.get_build(self.args.project, self.args.current_run_id)
         print('Current Build info:')
-        print(json.dumps(build.as_dict(), sort_keys=True, indent=4))
+        # print(json.dumps(build.as_dict(), sort_keys=True, indent=4))
 
 
         # IDEA:
@@ -54,9 +54,18 @@ class GitFlow(Flow):
         if current_build is None:
             raise ValueError(f'Current build not found in production branch {self.args.current_run_id}')
 
+        print('Current Build info:')
         print(json.dumps(current_build.as_dict(), sort_keys=True, indent=4))
 
+        # Let's find the previous build
+        index_current_build = prod_branches_builds.index(current_build)
+        if index_current_build == 0:
+            raise ValueError('There is no previous build in production branch')
 
+        previous_build = prod_branches_builds[index_current_build - 1]
+        print('Previous Build info:')
+        print(json.dumps(previous_build.as_dict(), sort_keys=True, indent=4))
+        
         # Get pipeline runs
         # pipelines_client = PipelinesClient(url, credentials)
         # runs = pipelines_client.list_runs(self.args.project, self.args.pipeline_id)
