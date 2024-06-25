@@ -76,13 +76,15 @@ steps:
   
 - script: |
     set -e
-    
-    diff --brief <(sort $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_159.json) <(sort $(System.DefaultWorkingDirectory)/process-time-azure-devops/tests_snapshots/process_time_result_159.json) >/dev/null
+    snap157=$(System.DefaultWorkingDirectory)/process-time-azure-devops/tests_snapshots/process_time_result_157.json
+    result157=$(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_157.json
+    diff --brief <(sort $snap157) <(sort $result157) >/dev/null
     comp_value=$?
     
     if [ $comp_value -eq 1 ]
     then
       echo "do something because they're different"
     else
-      echo "do something because they're identical"
+      exit 1
     fi
+  displayName: 'Compare Files'
