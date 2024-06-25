@@ -31,5 +31,5 @@ class GitFlow(Flow):
         build_client = BuildClient(url, credentials)
         builds = build_client.get_builds(self.args.project, definitions=[self.args.pipeline_id])
         print('Builds info:')
-        print(json.dumps(builds.as_dict(), sort_keys=True, indent=4))
+        print(json.dumps(builds, sort_keys=True, indent=4))
         return 1
