@@ -14,7 +14,7 @@ parameters:
     default:
       - 157 # Example Run Trunk Based — PR
       - 159 # Example Run Trunk Based — no PR
-#      - 122
+      - 122 # Example Run Git Flow — PR
 
 variables:
 - name: PYTHON_VERSION
@@ -53,7 +53,11 @@ steps:
       pipeline_id=2
       echo "pipeline_id=$pipeline_id"
       current_run_id=${{ run }}
-      python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
+      if [ ${{ run }} -eq 122 ];
+      then
+        python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id --production-branch-name "production" --development-branch-name "development"
+      else
+        python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
     displayName: '[${{ run }}] Test — Example Run'
     env:
       System.AccessToken: $(System.AccessToken)
@@ -77,3 +81,21 @@ steps:
         exit 0
       fi
     displayName: '[${{ run }}] Compare Files'
+    
+    #  - script: |
+    #      set -e
+    #      cd process-time-azure-devops
+    #      # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
+    #      orgname="worldpwn"
+    #      echo "orgname=$orgname"
+    #      token=$(System.AccessToken)
+    #      project="process-time"
+    #      echo "project=$project"
+    #      pipeline_id=3
+    #      echo "pipeline_id=$pipeline_id"
+    #      current_run_id=${{ run }}
+    #      python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id --production-branch-name "production" --development-branch-name "development"
+    #    displayName: 'Test — Example Git Flow — PR'
+    #    env:
+    #      System.AccessToken: $(System.AccessToken)
+    #     
