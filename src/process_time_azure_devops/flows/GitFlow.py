@@ -84,7 +84,7 @@ class GitFlow(Flow):
             credentials=credentials,
             url=url,
             build=development_build_right_after_last_successful_production_build,
-            commit=development_build_right_after_last_successful_production_build.source.version)
+            commit=development_build_right_after_last_successful_production_build.source_version)
 
         # Get time difference between first commit and deployment
         current_run = build_client.get_build(self.args.project, self.args.current_run_id)
