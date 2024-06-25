@@ -33,10 +33,6 @@ class GitFlow(Flow):
         # Get builds
         build_client = BuildClient(url, credentials)
 
-        # build = build_client.get_build(self.args.project, self.args.current_run_id)
-        # print('Current Build info:')
-        # print(json.dumps(build.as_dict(), sort_keys=True, indent=4))
-
         # IDEA:
         # Get current BUILD from production branch
         # Get previous BUILD from production branch
