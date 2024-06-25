@@ -46,6 +46,7 @@ steps:
     echo "pipeline_id=$pipeline_id"
     current_run_id=157
     python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
+    ls
   displayName: 'Test — Example Run Trunk Based — PR'
   env:
     System.AccessToken: $(System.AccessToken)
@@ -62,6 +63,7 @@ steps:
     echo "pipeline_id=$pipeline_id"
     current_run_id=159
     python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
+    ls
   displayName: 'Test — Example Run Trunk Based — no PR'
   env:
     System.AccessToken: $(System.AccessToken)
