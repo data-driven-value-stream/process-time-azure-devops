@@ -12,8 +12,8 @@ parameters:
   - name: 'test_snapshots_runs'
     type: object
     default:
-      - 157
-      - 159
+      - 157 # Example Run Trunk Based — PR
+      - 159 # Example Run Trunk Based — no PR
 #      - 122
 
 variables:
@@ -41,24 +41,7 @@ steps:
     pip install .[build]
   displayName: 'Install dependencies'
 
-- ${{ each run in parameters.test_snapshots_runs }}:
-#  - script: |
-#      set -e
-#      cd process-time-azure-devops
-#      # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
-#      orgname="worldpwn"
-#      echo "orgname=$orgname"
-#      token=$(System.AccessToken)
-#      project="process-time"
-#      echo "project=$project"
-#      pipeline_id=3
-#      echo "pipeline_id=$pipeline_id"
-#      current_run_id=${{ run }}
-#      python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id --production-branch-name "production" --development-branch-name "development"
-#    displayName: 'Test — Example Git Flow — PR'
-#    env:
-#      System.AccessToken: $(System.AccessToken)
-#      
+- ${{ each run in parameters.test_snapshots_runs }}: 
   - script: |
       cd process-time-azure-devops
       # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
@@ -77,6 +60,7 @@ steps:
   
   - publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_${{ run }}.json
     artifact: process_time_result_${{ run }}
+    displayName: '[${{ run }}] Publish Result File'
   - script: |
       set -e
       snap=$(System.DefaultWorkingDirectory)/process-time-azure-devops/tests_snapshots/process_time_result_${{ run }}.json
