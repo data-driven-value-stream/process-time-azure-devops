@@ -33,9 +33,9 @@ def get_first_commit_date(project: str, credentials: any, url: str, commit: str,
         print(json.dumps(commit_info.as_dict(), sort_keys=True, indent=4))
         first_commit_time = commit_info.author.date
         print(f'First commit time: {first_commit_time}')
-        return commit_info.author.date
+        return commit_info.author.date, pr
     else:
-        return get_first_commit_date_from_pr(pr)
+        return get_first_commit_date_from_pr(pr), pr
 
 
 def get_first_commit_date_from_pr(pr: GitPullRequest) -> datetime.datetime:
