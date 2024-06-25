@@ -12,9 +12,12 @@ parameters:
   - name: 'test_snapshots_runs'
     type: object
     default:
-      - 157 # Example Run Trunk Based — PR
-      - 159 # Example Run Trunk Based — no PR
-      - 122 # Example Run Git Flow — PR
+      - run_id: 157 # Example Run Trunk Based — PR
+        pipeline_id: 2
+      - run_id: 159 # Example Run Trunk Based — no PR
+        pipeline_id: 2
+      - run_id: 122 # Example Run Git Flow — PR
+        pipeline_id: 3
 
 variables:
 - name: PYTHON_VERSION
@@ -49,26 +52,24 @@ steps:
       token=$(System.AccessToken)
       project="process-time"
       echo "project=$project"
-      pipeline_id=2
+      pipeline_id={{ run.pipeline_id }}
       echo "pipeline_id=$pipeline_id"
-      current_run_id=${{ run }}?
+      current_run_id=${{ run.run_id }}
       
-      if [ $current_run_id -eq 122 ];
-      then
-        python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id --production-branch-name "production" --development-branch-name "development"
-      else
-        python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
-    displayName: '[${{ run }}] Test — Example Run'
+      python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id 
+#      --production-branch-name "production" --development-branch-name "development"
+      
+    displayName: '[${{ run.run_id }}] Test — Example Run'
     env:
       System.AccessToken: $(System.AccessToken)
   
-  - publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_${{ run }}.json
-    artifact: process_time_result_${{ run }}
-    displayName: '[${{ run }}] Publish Result File'
+  - publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_${{ run.run_id }}.json
+    artifact: process_time_result_${{ run.run_id }}
+    displayName: '[${{ run.run_id }}] Publish Result File'
   - script: |
       set -e
-      snap=$(System.DefaultWorkingDirectory)/process-time-azure-devops/tests_snapshots/process_time_result_${{ run }}.json
-      result=$(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_${{ run }}.json
+      snap=$(System.DefaultWorkingDirectory)/process-time-azure-devops/tests_snapshots/process_time_result_${{ run.run_id }}.json
+      result=$(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_${{ run.run_id }}.json
       diff --brief <(sort $snap) <(sort $result) >/dev/null
       comp_value_=$?
       
@@ -80,4 +81,4 @@ steps:
         echo 'Files are the same'
         exit 0
       fi
-    displayName: '[${{ run }}] Compare Files'
+    displayName: '[${{ run.run_id }}] Compare Files'
