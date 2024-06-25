@@ -50,6 +50,9 @@ steps:
   displayName: 'Test — Example Run Trunk Based — PR'
   env:
     System.AccessToken: $(System.AccessToken)
+
+- publish: $(System.DefaultWorkingDirectory)/process_time_result_157.json
+  artifact: process_time_result_157
     
 - script: |
     cd process-time-azure-devops
@@ -67,3 +70,6 @@ steps:
   displayName: 'Test — Example Run Trunk Based — no PR'
   env:
     System.AccessToken: $(System.AccessToken)
+
+- publish: $(System.DefaultWorkingDirectory)/process_time_result_159.json
+  artifact: process_time_result_159
