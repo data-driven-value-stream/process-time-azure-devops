@@ -140,3 +140,5 @@ if __name__ == "__main__":
     print('========== Result: ==========')
     print(process_time_result.to_json())
     print('=============================')
+    with open(f'process_time_result_{arguments.current_run_id}.json', 'w') as f:
+        f.write(process_time_result.to_json())
