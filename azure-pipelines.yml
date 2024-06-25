@@ -8,11 +8,18 @@ pr:
 pool:
   vmImage: ubuntu-latest
 
+parameters:
+  - name: 'test_snapshots_runs'
+    type: object
+    default:
+      - 157
+      - 159
+      - 122
 
 variables:
 - name: PYTHON_VERSION
   value: 3.12.2
-
+  
 resources:
   repositories:
     - repository: process-time
@@ -34,83 +41,55 @@ steps:
     pip install .[build]
   displayName: 'Install dependencies'
 
-- script: |
-    set -e
-    cd process-time-azure-devops
-    # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
-    orgname="worldpwn"
-    echo "orgname=$orgname"
-    token=$(System.AccessToken)
-    project="process-time"
-    echo "project=$project"
-    pipeline_id=3
-    echo "pipeline_id=$pipeline_id"
-    current_run_id=122
-    python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id --production-branch-name "production" --development-branch-name "development"
-  displayName: 'Test — Example Git Flow — PR'
-  env:
-    System.AccessToken: $(System.AccessToken)
-    
-- script: |
-    cd process-time-azure-devops
-    # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
-    orgname="worldpwn"
-    echo "orgname=$orgname"
-    token=$(System.AccessToken)
-    project="process-time"
-    echo "project=$project"
-    pipeline_id=2
-    echo "pipeline_id=$pipeline_id"
-    current_run_id=157
-    python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
-  displayName: 'Test — Example Run Trunk-Based — PR'
-  env:
-    System.AccessToken: $(System.AccessToken)
-
-- publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_157.json
-  artifact: process_time_result_157
-    
-- script: |
-    set -e
-    cd process-time-azure-devops
-    # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
-    orgname="worldpwn"
-    echo "orgname=$orgname"
-    token=$(System.AccessToken)
-    project="process-time"
-    echo "project=$project"
-    pipeline_id=2
-    echo "pipeline_id=$pipeline_id"
-    current_run_id=159
-    python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
-  displayName: 'Test — Example Run Trunk-Based — no PR'
-  env:
-    System.AccessToken: $(System.AccessToken)
-
-- publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_159.json
-  artifact: process_time_result_159
+- ${{ each run in parameters.test_snapshots_runs }}:
+#  - script: |
+#      set -e
+#      cd process-time-azure-devops
+#      # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
+#      orgname="worldpwn"
+#      echo "orgname=$orgname"
+#      token=$(System.AccessToken)
+#      project="process-time"
+#      echo "project=$project"
+#      pipeline_id=3
+#      echo "pipeline_id=$pipeline_id"
+#      current_run_id=${{ run }}
+#      python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id --production-branch-name "production" --development-branch-name "development"
+#    displayName: 'Test — Example Git Flow — PR'
+#    env:
+#      System.AccessToken: $(System.AccessToken)
+#      
+  - script: |
+      cd process-time-azure-devops
+      # Example: https://dev.azure.com/worldpwn/process-time/_build?definitionId=2
+      orgname="worldpwn"
+      echo "orgname=$orgname"
+      token=$(System.AccessToken)
+      project="process-time"
+      echo "project=$project"
+      pipeline_id=2
+      echo "pipeline_id=$pipeline_id"
+      current_run_id=${{ run }}
+      python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id
+    displayName: 'Test — Example Run Trunk-Based — PR'
+    env:
+      System.AccessToken: $(System.AccessToken)
   
-- script: |
-    set -e
-    
-    # 157 example    
-    snap157=$(System.DefaultWorkingDirectory)/process-time-azure-devops/tests_snapshots/process_time_result_157.json
-    result157=$(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_157.json
-    diff --brief <(sort $snap157) <(sort $result157) >/dev/null
-    comp_value_157=$?
-    
-    # 159 example   
-    snap159=$(System.DefaultWorkingDirectory)/process-time-azure-devops/tests_snapshots/process_time_result_159.json
-    result159=$(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_159.json
-    diff --brief <(sort $snap159) <(sort $result159) >/dev/null
-    comp_value_159=$?
-    
-    if [ $comp_value_157 -eq 1 ] || [ $comp_value_159 -eq 1 ];
-    then
-      echo 'Files are not the same'
-      echo 1
-    else
-      echo 'Files are the same'
-      exit 0
-    fi
-  displayName: 'Compare Files'
+  - publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_${{ run }}.json
+    artifact: process_time_result_${{ run }}
+  - script: |
+      set -e
+      snap=$(System.DefaultWorkingDirectory)/process-time-azure-devops/tests_snapshots/process_time_result_${{ run }}.json
+      result=$(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_${{ run }}.json
+      diff --brief <(sort $snap) <(sort $result) >/dev/null
+      comp_value_=$?
+      
+      if [ $comp_value -eq 1 ];
+      then
+        echo 'Files are not the same'
+        echo 1
+      else
+        echo 'Files are the same'
+        exit 0
+      fi
+    displayName: 'Compare Files ${{ run }}'
