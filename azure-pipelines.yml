@@ -14,10 +14,13 @@ parameters:
     default:
       - run_id: 157 # Example Run Trunk Based — PR
         pipeline_id: 2
+        flow: trunk
       - run_id: 159 # Example Run Trunk Based — no PR
         pipeline_id: 2
+        flow: trunk
       - run_id: 122 # Example Run Git Flow — PR
         pipeline_id: 3
+        flow: git_flow
 
 variables:
 - name: PYTHON_VERSION
@@ -56,9 +59,11 @@ steps:
       echo "pipeline_id=$pipeline_id"
       current_run_id=${{ run.run_id }}
       
-      python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id 
-#      --production-branch-name "production" --development-branch-name "development"
-      
+      if [ "${{ run.flow }}" == "trunk" ]; then
+        python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id 
+      else
+        python src/process_time_azure_devops/__main__.py --org "$orgname" --token "$token" --project "$project" --pipeline-id "$pipeline_id" --current-run-id $current_run_id --production-branch-name "production" --development-branch-name "development"
+      fi
     displayName: '[${{ run.run_id }}] Test — Example Run'
     env:
       System.AccessToken: $(System.AccessToken)
