@@ -74,7 +74,7 @@ steps:
     System.AccessToken: $(System.AccessToken)
 
 # To publish result use run id in file name
-- publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_23.json
+- publish: $(System.DefaultWorkingDirectory)/process_time_result_23.json
   artifact: process_time_result_23
 ```
 
@@ -116,6 +116,6 @@ steps:
     System.AccessToken: $(System.AccessToken)
 
 # To publish result use run id in file name
-- publish: $(System.DefaultWorkingDirectory)/process-time-azure-devops/process_time_result_23.json
+- publish: $(System.DefaultWorkingDirectory)/process_time_result_23.json
   artifact: process_time_result_23
 ```
