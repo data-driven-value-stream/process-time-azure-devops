@@ -80,8 +80,6 @@ steps:
 
 ## Example Git-Flow
 
-## Example Trunk Based Development
-
 ```yml
 resources:
   repositories:
