@@ -10,7 +10,7 @@ packages = ["src/process_time_azure_devops"]
 
 [project]
 name = "process_time_azure_devops"
-version = "0.0.9"
+version = "0.1.0"
 authors = [
     { name="Andrei Kniazev" },
 ]
