@@ -20,7 +20,11 @@ def test_should_create_correct_json():
         "productionBuildId": 150,
         "productionBuildUrl": "https://dev.azure.com/worldpwn/process-time/_build/results?buildId=150",
         "firstChangePullRequestId": 9,
-        "firstChangePullRequestUrl": "https://dev.azure.com/worldpwn/process-time/_git/process-time/pullrequest/9"
+        "firstChangePullRequestUrl": "https://dev.azure.com/worldpwn/process-time/_git/process-time/pullrequest/9",
+        "metaData": {
+            "jsonResultVersion": "1.0",
+            "scriptVersion": "0.1.0"
+        }
     }
     """
 
