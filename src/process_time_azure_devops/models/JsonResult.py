@@ -8,16 +8,18 @@ class JsonResult:
                  production_build_id: int,
                  production_build_url: str,
                  first_change_pull_request_id: int | None,
-                 first_change_pull_request_url: str | None):
+                 first_change_pull_request_url: str | None,
+                 branching_strategy: str):
         self.repositoryUrl = repository_url
         self.processTimeInMinutes = process_time_in_minutes
         self.productionBuildId = production_build_id
         self.productionBuildUrl = production_build_url
         self.firstChangePullRequestId = first_change_pull_request_id
         self.firstChangePullRequestUrl = first_change_pull_request_url
+        self.branchingStrategy = branching_strategy
         self.metaData = {
             "jsonResultVersion": "1.0",
-            "scriptVersion": "0.1.0"
+            "scriptVersion": "0.3.0"
         }
 
     def to_json(self) -> str:

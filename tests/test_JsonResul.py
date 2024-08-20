@@ -9,7 +9,8 @@ def test_should_create_correct_json():
         150,
         "https://dev.azure.com/worldpwn/process-time/_build/results?buildId=150",
         9,
-        "https://dev.azure.com/worldpwn/process-time/_git/process-time/pullrequest/9"
+        "https://dev.azure.com/worldpwn/process-time/_git/process-time/pullrequest/9",
+        "GitFlow"
     )
     as_json = json_result.to_json()
 
@@ -21,9 +22,10 @@ def test_should_create_correct_json():
         "productionBuildUrl": "https://dev.azure.com/worldpwn/process-time/_build/results?buildId=150",
         "firstChangePullRequestId": 9,
         "firstChangePullRequestUrl": "https://dev.azure.com/worldpwn/process-time/_git/process-time/pullrequest/9",
+        "branchingStrategy": "GitFlow",
         "metaData": {
             "jsonResultVersion": "1.0",
-            "scriptVersion": "0.1.0"
+            "scriptVersion": "0.3.0"
         }
     }
     """

@@ -106,6 +106,7 @@ class GitFlow(Flow):
             production_build_url=repository_url.replace("/_git/process-time",
                                                         "") + f"/_build/results?buildId={current_build.id}",
             first_change_pull_request_id=first_change_pull_request_id,
-            first_change_pull_request_url=first_change_pull_request_url
+            first_change_pull_request_url=first_change_pull_request_url,
+            branching_strategy='GitFlow'
         )
         return result
