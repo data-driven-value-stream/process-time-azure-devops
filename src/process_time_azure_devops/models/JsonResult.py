@@ -15,6 +15,10 @@ class JsonResult:
         self.productionBuildUrl = production_build_url
         self.firstChangePullRequestId = first_change_pull_request_id
         self.firstChangePullRequestUrl = first_change_pull_request_url
+        self.metaData = {
+            "jsonResultVersion": "1.0",
+            "scriptVersion": "0.1.0"
+        }
 
     def to_json(self) -> str:
         return json.dumps(self.__dict__)
